@@ -1,3 +1,4 @@
+from logging import Logging
 from search import search_albums, search_artists
 from update import update_album, update_artist
 
