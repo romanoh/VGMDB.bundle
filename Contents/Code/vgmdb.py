@@ -1,10 +1,12 @@
 def search_albums(query):
+ 	
     request = HTTP.Request(
-        'http://vgmdb.info/search/albums?format=json&q=' + String.Quote(query)
+        'http://vgmdb.info/search/albums?format=json&q=' + query
     )
     try:
         request.load()
         result = JSON.ObjectFromString(request.content)
+        Log.Error('Great it worked: ' + query)
         return result['results']['albums']
     except:
         Log.Error('Error searching VGMDB - Album: ' + query)
@@ -21,7 +23,7 @@ def get_album(id):
 
 def search_artists(query):
     request = HTTP.Request(
-        'http://vgmdb.info/search/artists?format=json&q=' + String.Quote(query)
+        'http://vgmdb.info/search/artists?format=json&q=' + query
     )
     try:
         request.load()

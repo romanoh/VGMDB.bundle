@@ -17,19 +17,7 @@ TRACK_LANGUAGES = {
 
 def update_album(metadata, media, force):
     result = get_album(metadata.id)
-
-    if metadata.genres is None or force:
-        metadata.genres = result['categories']
-
-    if metadata.collections is None or force:
-        lang = lang_pref()
-        if lang == 'og':
-            lang = 'en'
-        metadata.collections = map(lambda p: p['names'][lang], result['products'])
-
-    if (metadata.rating is None or force) and 'rating' in result:
-        metadata.rating = float(result['rating'])
-
+    
     if metadata.original_title is None or force:
         metadata.original_title = result['name']
 
@@ -40,14 +28,34 @@ def update_album(metadata, media, force):
         else:
             metadata.title = result['names'][lang]
 
-    if metadata.summary is None or force:
-        metadata.summary = result['notes']
+    # This updates the genre in Plex.
+    if metadata.genres is None or force:
+        metadata.genres = result['categories']
+
+    # This updates the styles in Plex.
+    if metadata.styles is None or force:
+        lang = lang_pref()
+        if lang == 'og':
+            lang = 'en'
+            metadata.styles = map(lambda p: p['names'][lang], result['composers'])
 
     if metadata.studio is None or force:
         lang = lang_pref()
         if lang == 'og':
             lang = 'en'
-        metadata.studio = result['publisher']['names'][lang]
+            metadata.studio = result['publisher']['names'][lang]
+
+    if metadata.collections is None or force:
+        lang = lang_pref()
+        if lang == 'og':
+            lang = 'en'
+            metadata.collections = map(lambda p: p['names'][lang], result['products'])
+
+    if (metadata.rating is None or force) and 'rating' in result:
+        metadata.rating = float(result['rating'])
+
+    if metadata.summary is None or force:
+        metadata.summary = result['notes']
 
     if (metadata.originally_available_at is None or force) and 'release_date' in result:
         split = map(lambda s: int(s), result['release_date'].split('-'))
@@ -117,8 +125,8 @@ def update_album(metadata, media, force):
 def update_artist(metadata, media, force):
     result = get_artist(metadata.id)
 
-    if metadata.rating is None or force:
-        metadata.rating = float(result['info']['Weighted album rating'].replace('/10', ''))
+    # if metadata.rating is None or force:
+        # metadata.rating = float(result['info']['Weighted album rating'].replace('/10', ''))
 
     if metadata.title is None or force:
         metadata.title = result['name']
