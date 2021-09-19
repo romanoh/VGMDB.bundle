@@ -1,15 +1,23 @@
+from logging import Logging
+
+# Setup logger
+log = Logging()
+
+
 def search_albums(query):
- 	
     request = HTTP.Request(
         'http://vgmdb.info/search/albums?format=json&q=' + String.Quote(query)
     )
     try:
         request.load()
         result = JSON.ObjectFromString(request.content)
-        Log.Info('VGMDB: Great it worked: ' + query)
+        log.info('VGMDB: Great it worked: ' + query)
         return result['results']['albums']
-    except:
-        Log.Error('Error searching VGMDB - Album: ' + query)
+    except Exception as e:  # This is the correct syntax
+        raise SystemExit(e)
+
+    # log.error('VGMDB LINK: Error searching VGMDB - Album: ' + query)
+
 
 def get_album(id):
     request = HTTP.Request(
@@ -19,7 +27,8 @@ def get_album(id):
         request.load()
         return JSON.ObjectFromString(request.content)
     except:
-        Log.Error('Error getting album info')
+        log.error('Error getting album info')
+
 
 def search_artists(query):
     request = HTTP.Request(
@@ -30,7 +39,8 @@ def search_artists(query):
         result = JSON.ObjectFromString(request.content)
         return result['results']['artists']
     except:
-        Log.Error('Error searching VGMDB - Artist: ' + query)
+        log.error('Error searching VGMDB - Artist: ' + query)
+
 
 def get_artist(id):
     request = HTTP.Request(
@@ -40,4 +50,4 @@ def get_artist(id):
         request.load()
         return JSON.ObjectFromString(request.content)
     except:
-        Log.Error('Error getting artist info')
+        log.error('Error getting artist info')

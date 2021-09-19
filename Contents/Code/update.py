@@ -22,10 +22,15 @@ TRACK_LANGUAGES = {
 
 def update_album(metadata, media, force):
     result = get_album(metadata.id)
-
+    # -------------------------------------------------------------------------------
     if metadata.original_title is None or force:
         metadata.original_title = result['name']
 
+    if metadata.original_title is not None:
+        log.info('UPDATE: Found original_title: %s', metadata.original_title)
+    else:
+        log.info('UPDATE: No original_title Found.')
+    # -------------------------------------------------------------------------------
     if metadata.title is None or force:
         lang = lang_pref()
         if lang == 'og':
@@ -33,6 +38,11 @@ def update_album(metadata, media, force):
         else:
             metadata.title = result['names'][lang]
 
+    if metadata.title is not None:
+        log.info('UPDATE: Found title: %s', metadata.title)
+    else:
+        log.info('UPDATE: No title Found.')
+    # -------------------------------------------------------------------------------
     # This updates the genre in Plex.
     if metadata.genres is None or force:
         metadata.genres = result['categories']
@@ -43,17 +53,28 @@ def update_album(metadata, media, force):
         if lang == 'og':
             lang = 'en'
             metadata.styles = map(lambda p: p['names'][lang], result['composers'])
-
+        else:
+            metadata.styles = map(lambda p: p['names'][lang], result['composers'])
+    # -------------------------------------------------------------------------------
     if metadata.studio is None or force:
         lang = lang_pref()
         if lang == 'og':
             lang = 'en'
             metadata.studio = result['publisher']['names'][lang]
+        else:
+            metadata.studio = result['publisher']['names'][lang]
 
+    if metadata.studio is not None:
+        log.info('UPDATE: Found Studio: %s', metadata.studio)
+    else:
+        log.info('UPDATE: No Studio Found.')
+    # -------------------------------------------------------------------------------
     if metadata.collections is None or force:
         lang = lang_pref()
         if lang == 'og':
             lang = 'en'
+            metadata.collections = map(lambda p: p['names'][lang], result['products'])
+        else:
             metadata.collections = map(lambda p: p['names'][lang], result['products'])
 
     if (metadata.rating is None or force) and 'rating' in result:
@@ -63,7 +84,7 @@ def update_album(metadata, media, force):
         metadata.summary = result['notes']
 
     if metadata.summary is not None:
-        log.info('UPDATE: Found Notes: %s', result['notes'])
+        log.info('UPDATE: Found Notes: %s', metadata.summary)
     else:
         log.info('UPDATE: No Notes Found.')
 
@@ -96,7 +117,7 @@ def update_album(metadata, media, force):
                     discs.append(disc)
                 tracks[disc].append(track.index)
             except:
-                Log.Error('Error getting track data')
+                log.error('Error getting track data')
 
         # Multi-disc track naming seems bugged
         # https://forums.plex.tv/t/how-to-get-disc-number-for-tracks/331052
@@ -172,4 +193,4 @@ def get_poster(metadata, thumb, full):
         ).content)
         metadata.posters[full] = thumbnail
     except:
-        Log.Error('Error loading poster')
+        log.error('Error loading poster')

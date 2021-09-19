@@ -10,7 +10,7 @@ def Start():
 
 class VGMDBAlbum(Agent.Album):
     name = 'VGMDB'
-    languages = [EN]
+    languages = [ EN ]
     primary_provider = True
     fallback_agent = False
     accepts_from = None
@@ -25,7 +25,7 @@ class VGMDBAlbum(Agent.Album):
 
 class VGMDBArtist(Agent.Artist):
     name = 'VGMDB'
-    languages = [EN]
+    languages = [ EN ]
     primary_provider = True
     fallback_agent = False
     accepts_from = None

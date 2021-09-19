@@ -33,9 +33,21 @@ def search_albums(results, media, lang):
         if not result:
             log.warn('SEARCH: No results found for query.')
         else:
-            log.debug('SEARCH: Found %s result(s) for query', len(result))
+            log.debug('SEARCH: Found %s result(s) for query.', len(result))
             log.debug('SEARCH: %s', result)
         log.separator(log_level='debug')
+
+        log.separator(msg='ALBUM SEARCH', log_level="info")
+        # Log basic metadata
+        data_to_log = [
+            {'ID': media.id},
+            {'Title': media.title},
+            {'Name': media.name},
+            {'Album': media.album},
+            {'Artist': media.artist},
+        ]
+        log.metadata(data_to_log)
+        log.separator(log_level="info")
 
 
 def search_artists(results, media, lang):
