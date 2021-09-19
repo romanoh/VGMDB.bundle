@@ -2,6 +2,9 @@ from datetime import datetime
 from vgmdb import get_album, get_artist
 from logging import Logging
 
+# Setup logger
+log = Logging()
+
 LANGUAGES = {
     'English': 'en',
     'Japanese': 'ja',
@@ -16,8 +19,6 @@ TRACK_LANGUAGES = {
     'Original': 'English'
 }
 
-# Setup logger
-log = Logging()
 
 def update_album(metadata, media, force):
     result = get_album(metadata.id)
@@ -60,17 +61,17 @@ def update_album(metadata, media, force):
 
     if metadata.summary is None or force:
         metadata.summary = result['notes']
-		
-	if metadata.summary is not None:
-		log.info('UPDATE: Found Notes: %s', result['notes'])
-	else:
-		log.info('UPDATE: No Notes Found.')
+
+    if metadata.summary is not None:
+        log.info('UPDATE: Found Notes: %s', result['notes'])
+    else:
+        log.info('UPDATE: No Notes Found.')
 
     if (metadata.originally_available_at is None or force) and 'release_date' in result:
         split = map(lambda s: int(s), result['release_date'].split('-'))
         release_date = datetime(split[0], split[1], split[2])
         metadata.originally_available_at = release_date
-	
+
     if metadata.posters is None or force:
         get_poster(metadata, result['picture_small'], result['picture_full'])
         for poster in result['covers']:
@@ -84,7 +85,7 @@ def update_album(metadata, media, force):
         for track in media.children:
             request = HTTP.Request(
                 'http://localhost:32400/library/metadata/' + track.id,
-                headers = { 'X-Plex-Token': token, 'Accept': 'application/json' }
+                headers={'X-Plex-Token': token, 'Accept': 'application/json'}
             )
             try:
                 request.load()
@@ -131,11 +132,12 @@ def update_album(metadata, media, force):
                     if track_name is not None:
                         metadata.tracks[track_index].name = track_name
 
+
 def update_artist(metadata, media, force):
     result = get_artist(metadata.id)
 
     # if metadata.rating is None or force:
-        # metadata.rating = float(result['info']['Weighted album rating'].replace('/10', ''))
+    # metadata.rating = float(result['info']['Weighted album rating'].replace('/10', ''))
 
     if metadata.title is None or force:
         metadata.title = result['name']
@@ -146,9 +148,11 @@ def update_artist(metadata, media, force):
     if (metadata.posters is None or force) and result['picture_full'] is not None:
         get_poster(metadata, result['picture_small'], result['picture_full'])
 
+
 def lang_pref():
     lang = Prefs['language']
     return LANGUAGES[lang]
+
 
 def pick_track_name(track_names, lang):
     if lang in track_names:
@@ -160,10 +164,11 @@ def pick_track_name(track_names, lang):
     elif 'Japanese' in track_names:
         return track_names['Japanese']
 
+
 def get_poster(metadata, thumb, full):
     try:
         thumbnail = Proxy.Preview(HTTP.Request(
-            thumb, immediate = True
+            thumb, immediate=True
         ).content)
         metadata.posters[full] = thumbnail
     except:

@@ -1,15 +1,16 @@
-from logging import Logging
 from search import search_albums, search_artists
 from update import update_album, update_artist
 
 EN = Locale.Language.English
 
+
 def Start():
     HTTP.CacheTime = CACHE_1DAY
 
+
 class VGMDBAlbum(Agent.Album):
     name = 'VGMDB'
-    languages = [ EN ]
+    languages = [EN]
     primary_provider = True
     fallback_agent = False
     accepts_from = None
@@ -21,9 +22,10 @@ class VGMDBAlbum(Agent.Album):
     def update(self, metadata, media, lang, force):
         update_album(metadata, media, force)
 
+
 class VGMDBArtist(Agent.Artist):
     name = 'VGMDB'
-    languages = [ EN ]
+    languages = [EN]
     primary_provider = True
     fallback_agent = False
     accepts_from = None
