@@ -1,4 +1,5 @@
 import vgmdb
+from logging import Logging
 
 def search_albums(results, media, lang):
 
