@@ -1,5 +1,6 @@
 from datetime import datetime
 from vgmdb import get_album, get_artist
+from logging import Logging
 
 LANGUAGES = {
     'English': 'en',
@@ -15,9 +16,12 @@ TRACK_LANGUAGES = {
     'Original': 'English'
 }
 
+# Setup logger
+log = Logging()
+
 def update_album(metadata, media, force):
     result = get_album(metadata.id)
-    
+
     if metadata.original_title is None or force:
         metadata.original_title = result['name']
 
@@ -56,12 +60,17 @@ def update_album(metadata, media, force):
 
     if metadata.summary is None or force:
         metadata.summary = result['notes']
+		
+	if metadata.summary is not None:
+		log.info('UPDATE: Found Notes: %s', result['notes'])
+	else:
+		log.info('UPDATE: No Notes Found.')
 
     if (metadata.originally_available_at is None or force) and 'release_date' in result:
         split = map(lambda s: int(s), result['release_date'].split('-'))
         release_date = datetime(split[0], split[1], split[2])
         metadata.originally_available_at = release_date
-
+	
     if metadata.posters is None or force:
         get_poster(metadata, result['picture_small'], result['picture_full'])
         for poster in result['covers']:

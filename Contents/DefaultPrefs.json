@@ -10,5 +10,17 @@
     "id": "token",
     "label": "Plex Token (Required for multi-disk support. See: https://support.plex.tv/articles/204059436-finding-an-authentication-token-x-plex-token/)",
     "type": "text"
-  }
+  },
+  {
+	"id": "logging_level",
+	"label": "Level of plugin logging: ",
+	"type": "enum",
+	"values": [
+		"DEBUG",
+		"INFO",
+		"WARN",
+		"ERROR"
+	],
+	"default": "DEBUG"
+}
 ]
