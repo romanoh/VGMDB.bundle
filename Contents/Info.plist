@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleIdentifier</key>
-    <string>com.plexapp.agents.vgmdb</string>
+    <string>info.vgmdb.agents.vgmdb</string>
     <key>PlexAgentAttributionText</key>
     <string>VGMDB metadata agent by matthewdias</string>
     <key>PlexFrameworkVersion</key>
