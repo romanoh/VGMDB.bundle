@@ -38,6 +38,8 @@ def update_album(metadata, media, force):
 
     metadata.genres = result['categories']
 
+    #metadata.tags = result['classification']
+
     metadata.collections = map(lambda p: get_lang(p['names']), result['products'])
 
     # metadata.rating = float(result['rating'])

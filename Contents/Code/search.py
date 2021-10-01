@@ -91,9 +91,9 @@ def search_artists(results, media, lang):
     # Write search result status to log
     log.separator(msg='ARTIST SEARCH', log_level='debug')
     if not result:
-        log.warn('SEARCH: No results found for query.')
+        log.warn('SEARCH ARTIST: No results found for query.')
     else:
-        log.debug('SEARCH: Found %s result(s) for query', len(result))
-        log.debug('SEARCH: %s', result)
+        log.debug('SEARCH ARTIST: Found %s result(s) for query', len(result))
+        log.debug('SEARCH ARTIST: %s', result)
     log.separator(log_level='debug')
 

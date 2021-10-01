@@ -13,7 +13,7 @@ class VGMDBAlbum(Agent.Album):
     languages = [ EN ]
     primary_provider = True
     fallback_agent = False
-    accepts_from = None
+    accepts_from = ['com.plexapp.agents.localmedia']
     contributes_to = None
 
     def search(self, results, media, lang, manual):
